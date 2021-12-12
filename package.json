@@ -1,16 +1,19 @@
 {
-	"name": "obsidian-sample-plugin",
+	"name": "local-plantuml",
 	"version": "0.12.0",
-	"description": "This is a sample plugin for Obsidian (https://obsidian.md)",
+	"description": "Render your PlantUML diagrams locally.",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
-		"build": "node esbuild.config.mjs production"
+		"build": "node esbuild.config.mjs production",
+		"lint": "eslint . --ext .ts"
 	},
 	"keywords": [],
-	"author": "",
-	"license": "MIT",
+	"author": "Johannes Theiner",
+	"license": "GPL-3.0",
 	"devDependencies": {
+		"@types/execa": "^2.0.0",
+		"@types/get-stream": "^3.0.2",
 		"@types/node": "^16.11.6",
 		"@typescript-eslint/eslint-plugin": "^5.2.0",
 		"@typescript-eslint/parser": "^5.2.0",
@@ -18,6 +21,7 @@
 		"esbuild": "0.13.12",
 		"obsidian": "^0.12.17",
 		"tslib": "2.3.1",
-		"typescript": "4.4.4"
+		"typescript": "4.4.4",
+		"eslint": "^8.4.1"
 	}
 }
