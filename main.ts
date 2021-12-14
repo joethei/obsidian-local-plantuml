@@ -10,7 +10,6 @@ export default class LocalPlantUmlPlugin extends Plugin {
 		const args = [
 			'-jar',
 			'-Djava.awt.headless=true',
-			'--add-opens=java.xml/com.sun.org.apache.xalan.internal.xsltc.trax="ALL-UNNAMED"',
 			jar,
 			'-t' + output,
 			'-pipe'
@@ -38,6 +37,7 @@ export default class LocalPlantUmlPlugin extends Plugin {
 					}
 					resolve(stdout);
 				} else if (code === 1) {
+					console.log(stdout);
 					reject(new Error(`an error occurred`));
 				} else {
 					reject(new Error(`child exited with code ${code}`));
@@ -75,6 +75,7 @@ export default class LocalPlantUmlPlugin extends Plugin {
 				if (code === 0) {
 					resolve(stdout);
 				} else if (code === 1) {
+					console.log(stdout);
 					reject(new Error(`an error occurred`));
 				} else {
 					reject(new Error(`child exited with code ${code}`));
