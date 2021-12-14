@@ -1,6 +1,6 @@
 {
 	"name": "local-plantuml",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "Render your PlantUML diagrams locally.",
 	"main": "main.js",
 	"scripts": {

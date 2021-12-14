@@ -1,7 +1,7 @@
 {
 	"id": "local-plantuml",
 	"name": "Local PlantUML Provider",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"minAppVersion": "0.12.0",
 	"description": "Render your PlantUML diagrams locally.",
 	"author": "Johannes Theiner",

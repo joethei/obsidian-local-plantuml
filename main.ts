@@ -1,6 +1,6 @@
 import {Plugin} from 'obsidian';
 import {resolve} from 'path';
-import {exec} from "child_process";
+import {ChildProcess, exec} from "child_process";
 
 export default class LocalPlantUmlPlugin extends Plugin {
 
@@ -12,17 +12,33 @@ export default class LocalPlantUmlPlugin extends Plugin {
 			'-Djava.awt.headless=true',
 			jar,
 			'-t' + output,
+			'-charset utf-8',
 			'-pipe'
 		];
-		const child = exec('java ' + args.join(" "), {encoding: 'binary'});
+
+		let child: ChildProcess;
+		if(output === "png") {
+			child = exec('java ' + args.join(" "), {encoding: 'binary'});
+		}else {
+			child = exec('java ' + args.join(" "), {encoding: 'utf-8'});
+		}
 
 		let stdout: any;
+		let stderr: any;
 
 		if (child.stdout) {
 			child.stdout.on("data", (data) => {
 				if(stdout === undefined) {
 					stdout = data;
 				}else stdout += data;
+			});
+		}
+
+		if(child.stderr) {
+			child.stderr.on('data', (data) => {
+				if(stderr === undefined) {
+					stderr = data;
+				}else stderr += data;
 			});
 		}
 
@@ -34,17 +50,24 @@ export default class LocalPlantUmlPlugin extends Plugin {
 					if(output === "png") {
 						const buf = new Buffer(stdout, 'binary');
 						resolve(buf.toString('base64'));
+						return;
 					}
 					resolve(stdout);
+					return;
 				} else if (code === 1) {
 					console.log(stdout);
-					reject(new Error(`an error occurred`));
+					reject(new Error(stderr));
 				} else {
-					reject(new Error(`child exited with code ${code}`));
+					if(output === "png") {
+						const buf = new Buffer(stdout, 'binary');
+						resolve(buf.toString('base64'));
+						return;
+					}
+					resolve(stdout);
+					return;
 				}
 			});
-
-			child.stdin.write(uml);
+			child.stdin.write(uml, "utf-8");
 			child.stdin.end();
 		});
 	}
@@ -54,8 +77,8 @@ export default class LocalPlantUmlPlugin extends Plugin {
 		const args = [
 			'-jar',
 			'-Djava.awt.headless=true',
-			'--add-opens=java.xml/com.sun.org.apache.xalan.internal.xsltc.trax="ALL-UNNAMED"',
 			jar,
+			'-charset utf-8',
 			'-pipemap'
 		];
 		const child = exec('java ' + args.join(" "), {encoding: 'binary'});
@@ -74,6 +97,7 @@ export default class LocalPlantUmlPlugin extends Plugin {
 			child.on("close", (code) => {
 				if (code === 0) {
 					resolve(stdout);
+					return;
 				} else if (code === 1) {
 					console.log(stdout);
 					reject(new Error(`an error occurred`));
@@ -82,7 +106,7 @@ export default class LocalPlantUmlPlugin extends Plugin {
 				}
 			});
 
-			child.stdin.write(uml);
+			child.stdin.write(uml, "utf-8");
 			child.stdin.end();
 		});
 	}
