@@ -9,6 +9,9 @@ Render [PlantUML](https://plantuml.com) Diagrams in [Obsidian](https://obsidian.
 
 ---
 
+> ⚠️No longer in use, this functionality has been added to the main plugin
+
+
 This plugin works together with the [PlantUML](https://github.com/joethei/obsidian-plantuml) plugin and adds the ability to render diagrams locally.
 
 This plugin requires you to have a plantUML `.jar` downloaded to your system as well as a version of 
